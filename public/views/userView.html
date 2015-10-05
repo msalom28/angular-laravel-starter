@@ -1,0 +1,23 @@
+<div class="col-md-6">
+	<div class="well">
+		<h5 ng-if="authenticated"> Welcome, {{ currentUser.name }}</h5>
+		<h3>Users</h3>
+		<div class="buttons" style="margin-bottom: 10px">
+			<button class="btn btn-primary" ng-click="uc.getUsers()">Get Users!</button>
+			<button class="btn btn-danger" ng-click="uc.logout()">Logout</button>
+		</div>
+		
+		<ul class="list-group" ng-if="uc.users">			
+			<li class="list-group-item" ng-repeat="user in uc.users">				
+				<h4>{{ user.name }}</h4>
+				<h5>{{ user.email }}</h5>
+			</li>
+
+		</ul>
+		<div class="alert alert-danger" ng-if="user.error">				
+			<strong> There was an error: </strong>{{ user.error.error }}
+			<br>Please go back and try again
+		</div>
+	</div>
+
+</div>
