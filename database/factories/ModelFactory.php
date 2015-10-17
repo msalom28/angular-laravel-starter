@@ -11,12 +11,22 @@
 |
 */
 
-$factory->define(UnitConnection\User::class, function (Faker\Generator $faker) {
+$factory->define(UnitConnection\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
-        // 'password' => Hash::make('secret'),
         'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
+});
+
+$factory->define(UnitConnection\Models\Property::class, function (Faker\Generator $faker){
+
+	return [
+		'name' => $faker->sentence(3),
+		'address_street' => $faker->streetAddress,
+		'address_city' => $faker->city,
+		'address_postcode' => $faker->postcode,
+		'address_country' => 'US'
+	];
 });

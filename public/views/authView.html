@@ -1,22 +1,22 @@
-<div class="col-md-4">
+<div class="row">
+<div class="col-md-6 col-md-offset-3">
 	<div class="well">
 		
 		<h3>Login</h3>
 
 		<div class="alert alert-danger" ng-if="ac.loginError">				
-			<strong> There was an error: </strong>{{ ac.loginErrorText }}
-			<br>Please go back and try again
+			<strong> Error: </strong>{{ ac.loginErrorText }}
 		</div>
 
-		<form>
+		<form novalidate>
 			
 			<div class="form-group">
-				<input type="email" class="form-control" placeholder="Email" ng-model="ac.email">
+				<input type="text" name="email" class="form-control" placeholder="Email" ng-model="ac.email">
 			</div>
 
 			<div class="form-group">
 				
-				<input type="password" class="form-control" placeholder="Password" ng-model="ac.password">
+				<input type="password" name="email" class="form-control" placeholder="Password" ng-model="ac.password">
 
 			</div>
 
@@ -26,4 +26,5 @@
 
 	</div>
 
+</div>
 </div>

@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'user' => 'UnitConnection\User',
+    'user' => 'UnitConnection\Models\User',
 
     /*
     |--------------------------------------------------------------------------

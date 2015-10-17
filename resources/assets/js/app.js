@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('UnitConnection', ['ui.bootstrap', 'ui.router', 'satellizer'])
+		.module('UnitConnection', ['ui.router', 'ui.bootstrap', 'satellizer'])
 		.config( function( $stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide ){
 
 			//Contains the logic of what to do when certain responses are encountered
@@ -22,7 +22,15 @@
 						//Instead of checking for a status code of 400 which might be used
 						//for other reasons in Laravel, we check for the specific rejection
 						//reasons to tell us if we need to redirect to the login state
-						var rejectionReasons = ['token_not_provided', 'token_expired', 'token_absent', 'token_invalid', 'user_not_found'];
+						var rejectionReasons = [
+						'token_not_provided', 
+						'token_expired', 
+						'token_absent', 
+						'token_invalid', 
+						'user_not_found',
+						'The email field is required.',
+						'The password field is required.',
+						'The email/password combination is incorrect.'];
 
 						//Loop through each rejection reason and redirect to th login
 						//state if one is encountered
@@ -58,9 +66,16 @@
 
 			//Redirect to the auth state if any other states
 			// are requested other than users
-			$urlRouterProvider.otherwise('/auth');
+			$urlRouterProvider.otherwise('/');
 
 			$stateProvider
+
+				.state('welcome', {
+					url: '/',
+					templateUrl: 'views/welcomeView.html',
+					controller: 'WelcomeController as wc'
+				})
+
 				.state('auth', {
 					url: '/auth',
 					templateUrl: 'views/authView.html',
@@ -70,6 +85,18 @@
 					url: '/users',
 					templateUrl: 'views/userView.html',
 					controller: 'UserController as uc'
+
+				})
+				.state('dashboard', {
+					url: '/dashboard',
+					templateUrl: 'views/dashboardView.html',
+					controller: 'DashboardController as dc'
+
+				})
+				.state('properties', {
+					url: '/properties',
+					templateUrl: 'views/propertiesView.html',
+					controller: 'PropertyController as pc'
 
 				});
 
@@ -88,6 +115,9 @@
 				//otherwise not actually authenticated, they will be redirected to
 				//the suth state because of the rejected request anyway
 				if(user){
+
+					//function to logout globally
+					$rootScope.logout;
 
 					//The user's authenticated state gets flipped to
 					//true so we can now show parts of the UI that rely
@@ -109,7 +139,7 @@
 						event.preventDefault();
 
 						//go to the "main" state which in our case is users
-						$state.go('users');
+						$state.go('dashboard');
 
 					}
 

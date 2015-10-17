@@ -6,7 +6,7 @@
 		.module('UnitConnection')
 		.controller('AuthController', AuthController);
 
-		//$auth and $state are provided by satellizer
+		//$auth is provided by satellizer
 		function AuthController( $auth, $state, $http, $rootScope ) {
 
 			var ac = this;
@@ -19,7 +19,6 @@
 					password: ac.password
 				}
 
-
 				//Use Satellizer's $auth service to login
 				$auth.login(credentials).then(function(){
 
@@ -29,7 +28,8 @@
 
 				}, function( error ){
 
-					ac.loginError = true;
+					ac.loginError = true; 
+					console.log(error.data.error);
 					ac.loginErrorText = error.data.error;
 
 					//Because we returned the $http.get request in the $auth.login
@@ -54,12 +54,11 @@
 
 					//Everything worked out so we can now redirect to
 					//the users state to view the data
-					$state.go('users');
+					$state.go('dashboard');
 
-				});
+				});//end auth.login
 
 			}
-
 		}
 
 })();

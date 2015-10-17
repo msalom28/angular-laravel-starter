@@ -2,12 +2,14 @@
 
 //Load SPA
 Route::get('/', function () {
-    return view('spa');
+    return view('app');
 });
 
 
 Route::group(['prefix' => 'api'], function(){
-	Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
+	//Authenticate routes...
 	Route::post('authenticate', 'AuthenticateController@authenticate');
 	Route::get('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
+	//Property routes...
+	Route::get('properties', 'PropertyController@index');
 });

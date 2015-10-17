@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => UnitConnection\User::class,
+    'model' => UnitConnection\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

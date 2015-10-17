@@ -38359,30 +38359,45 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 })(window, window.angular);
 
 (function(){
+
 	'use strict';
 
 	angular
-		.module('UnitConnection', ['ui.bootstrap', 'ui.router', 'satellizer'])
+		.module('UnitConnection', ['ui.router', 'ui.bootstrap', 'satellizer'])
+		.config( function( $stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide ){
 
-		.config(function($stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide){
-			//logic on what to do when certain responses are encountered
-			function redirectWhenLoggedOut($q, $injector){
+			//Contains the logic of what to do when certain responses are encountered
+			function redirectWhenLoggetOut($q, $injector) {
 
 				return {
 
 					responseError: function(rejection){
-						//Neet to user $injector.get to bring in $state or else we get a circular dependency error
+
+						//Neet to user $injector.get to bring in $state or else we get
+						//a circular dependency error
+						//If we were to inject it in the traditional way—between the 
+						//parentheses in the function definition—we’ll get a “circular dependency error”.
 						var $state = $injector.get('$state');
 
 						//Instead of checking for a status code of 400 which might be used
 						//for other reasons in Laravel, we check for the specific rejection
 						//reasons to tell us if we need to redirect to the login state
-						var rejectionReasons = ['token_not_provided', 'token_expired', 'token_absent', 'token_invalid', 'user_not_found'];
+						var rejectionReasons = [
+						'token_not_provided', 
+						'token_expired', 
+						'token_absent', 
+						'token_invalid', 
+						'user_not_found',
+						'The email field is required.',
+						'The password field is required.',
+						'The email/password combination is incorrect.'];
 
-						//Loop through each rejection reason and redirect to the login state if one is encountered
+						//Loop through each rejection reason and redirect to th login
+						//state if one is encountered
 						angular.forEach(rejectionReasons, function(value, key){
 
 							if(rejection.data.error === value){
+
 								//If we get a rejection corresponding to one of the reasons
 								//in our array, we know we need to authenticate the user so
 								//we can remove the current user from local storage
@@ -38391,22 +38406,19 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 								//Send the user to the auth state so they can login
 								$state.go('auth');
 							}
+						});
 
-						});//end foreach
-
-						return $q.reject(rejection);
+							return $q.reject(rejection);
 
 					}
 				}
 			}
 
-			$provide.factory('redirectWhenLoggedOut', redirectWhenLoggedOut);
-
 			//Setup for the $httpInterceptor
-			$provide.factory('redirectWhenLoggedOut', redirectWhenLoggedOut);
+			$provide.factory('redirectWhenLoggetOut', redirectWhenLoggetOut);
 
 			//Push the new factory onto the $http interceptor array
-			$httpProvider.interceptors.push('redirectWhenLoggedOut');
+			$httpProvider.interceptors.push('redirectWhenLoggetOut');
 
 			//Satellizer configuration that specifies which API
 			//route the JWT should be retrieved from
@@ -38414,9 +38426,16 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
 			//Redirect to the auth state if any other states
 			// are requested other than users
-			$urlRouterProvider.otherwise('/auth');
+			$urlRouterProvider.otherwise('/');
 
 			$stateProvider
+
+				.state('welcome', {
+					url: '/',
+					templateUrl: 'views/welcomeView.html',
+					controller: 'WelcomeController as wc'
+				})
+
 				.state('auth', {
 					url: '/auth',
 					templateUrl: 'views/authView.html',
@@ -38427,23 +38446,38 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 					templateUrl: 'views/userView.html',
 					controller: 'UserController as uc'
 
+				})
+				.state('dashboard', {
+					url: '/dashboard',
+					templateUrl: 'views/dashboardView.html',
+					controller: 'DashboardController as dc'
+
+				})
+				.state('properties', {
+					url: '/properties',
+					templateUrl: 'views/propertiesView.html',
+					controller: 'PropertyController as pc'
+
 				});
 
 
 		}).run(function($rootScope, $state){
 
-			//$stateChangeStart is fired whenever the state changes. we can use some parameters
+			//$stateChangeStart is fired whenever the stae changes. we can use some parameters
 			//such as toState to hook into details about the state as it is changing
 			$rootScope.$on('$stateChangeStart', function(event, toState){
 
-				//Grab the user from local storage and parse it to an object
+				//Grab th user from local storage and parse it to an object
 				var user = JSON.parse(localStorage.getItem('user'));
 
 				//If there is any user data in local storage then the user is quite
 				//likely authenticated. If their token is expired, or if they are
 				//otherwise not actually authenticated, they will be redirected to
-				//the state because of the rejected request anyway
+				//the suth state because of the rejected request anyway
 				if(user){
+
+					//function to logout globally
+					$rootScope.logout;
 
 					//The user's authenticated state gets flipped to
 					//true so we can now show parts of the UI that rely
@@ -38465,7 +38499,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 						event.preventDefault();
 
 						//go to the "main" state which in our case is users
-						$state.go('users');
+						$state.go('dashboard');
 
 					}
 
@@ -38475,15 +38509,89 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
 		});//end config
 
+
+})();
+(function(){
+	'use strict'
+
+	angular
+		.module('UnitConnection')
+		.service('AuthService', AuthService);
+
+		function AuthService($auth, $rootScope, $state){
+
+			var self = this;
+
+			this.logout = function(){
+
+				//Remove the satellizer_token from localstorage
+				$auth.logout().then(function(){
+
+				//Remove the authenticated user from local storage
+				localStorage.removeItem('user');
+
+				//Flip authenticated to false so that we no longer
+				//show UI elements dependant on the user being logged in
+				$rootScope.authenticated = false;
+
+				//Remove the current user from rootscope
+				$rootScope.currentUser = null;
+
+				$state.go('auth');
+
+				});
+
+			}
+		}
+
 })();
 (function(){
 
 	'use strict';
 
-	angular.module('UnitConnection')
+	angular
+		.module('UnitConnection')
+		.service('PropertyService', PropertyService);
+
+		function PropertyService($http){
+
+			var self = this;
+
+			this.getProperties = function(){
+				return $http.get('/api/properties/');
+			}
+
+		}
+
+
+})();
+(function(){
+
+	'use strict';
+
+	angular
+		.module('UnitConnection')
+		.controller('WelcomeController', WelcomeController);
+
+		function WelcomeController($state, $rootScope){
+
+			var wc = this;
+
+			if($rootScope.authenticated ){
+				$state.go('dashboard');
+			}
+		}
+
+})();
+(function() {
+
+	'use strict';
+
+	angular
+		.module('UnitConnection')
 		.controller('AuthController', AuthController);
 
-		//$auth and $state are provided by satellizer
+		//$auth is provided by satellizer
 		function AuthController( $auth, $state, $http, $rootScope ) {
 
 			var ac = this;
@@ -38496,7 +38604,6 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 					password: ac.password
 				}
 
-
 				//Use Satellizer's $auth service to login
 				$auth.login(credentials).then(function(){
 
@@ -38506,7 +38613,8 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
 				}, function( error ){
 
-					ac.loginError = true;
+					ac.loginError = true; 
+					console.log(error.data.error);
 					ac.loginErrorText = error.data.error;
 
 					//Because we returned the $http.get request in the $auth.login
@@ -38531,16 +38639,12 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
 					//Everything worked out so we can now redirect to
 					//the users state to view the data
-					$state.go('users');
+					$state.go('dashboard');
 
-				});
+				});//end auth.login
 
-			}//end login()
-
+			}
 		}
-
-
-
 
 })();
 (function() {
@@ -38551,7 +38655,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 		.module('UnitConnection')
 		.controller('UserController', UserController);
 
-		function UserController( $http, $auth, $rootScope )
+		function UserController( $http, AuthService )
 		{
 			var uc = this;
 
@@ -38571,28 +38675,70 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 				});
 			}
 
-			//We would normally put the logout method in the same
-			//spot as the login method, ideally extracted out into
-			//a service. For this simpler example we'll leave it here
-			uc.logout = function() {
+			uc.logout = function(){
+				
+				AuthService.logout();
+			}
+		}
 
-				//Remove the satellizer_token from localstorage
-				$auth.logout().then(function(){
+})();
+(function(){
 
-					//Remove the authenticated user from local storage
-					localStorage.removeItem('user');
+	'use strict';
 
-					//Flip authenticated to false so that we no longer
-					//show UI elements dependant on the user being logged in
-					$rootScope.authenticated = false;
+	angular
+		.module('UnitConnection')
+		.controller('DashboardController', DashboardController);
 
-					//Remove the current user from rootscope
-					$rootScope.currentUser = null;
+		function DashboardController( $state, $rootScope, AuthService){
 
+			var dc = this;
+
+			if(! $rootScope.authenticated ){
+				$state.go('auth');
+			}
+
+			$rootScope.logout = function(){
+				AuthService.logout();
+			}
+
+			this.viewProperties = function(){
+				$state.go('dashboard.properties');
+			}			
+
+		}
+
+
+
+
+
+})();
+(function(){
+
+	'use strict';
+
+	angular
+		.module('UnitConnection')
+		.controller('PropertyController', PropertyController);
+
+		function PropertyController(PropertyService){
+
+			var pc = this;			
+
+			pc.getProperties = function(){
+
+				PropertyService.getProperties().then(function(results){
+					pc.properties = results.data;
+				}, function(error){
+					console.log('An error ocurred');
 				});
 
 			}
+
 		}
+
+
+
 
 })();
 //# sourceMappingURL=all.js.map
