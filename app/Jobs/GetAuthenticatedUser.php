@@ -1,9 +1,9 @@
 <?php
 
-namespace UnitConnection\Jobs;
+namespace MyApp\Jobs;
 
 use JWTAuth;
-use UnitConnection\Jobs\Job;
+use MyApp\Jobs\Job;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;

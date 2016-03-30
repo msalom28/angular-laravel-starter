@@ -2,7 +2,7 @@
 	'use strict'
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.service('AuthService', AuthService);
 
 		function AuthService($auth, $rootScope, $state){

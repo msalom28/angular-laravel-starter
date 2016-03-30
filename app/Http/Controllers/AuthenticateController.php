@@ -1,10 +1,10 @@
 <?php
 
-namespace UnitConnection\Http\Controllers;
+namespace MyApp\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use UnitConnection\Http\Controllers\Controller;
+use MyApp\Http\Controllers\Controller;
 
 class AuthenticateController extends Controller
 {
@@ -27,7 +27,7 @@ class AuthenticateController extends Controller
      */
     public function getAuthenticatedUser(Request $request)
     {
-        $json = $this->dispatchFrom('UnitConnection\Jobs\GetAuthenticatedUser', $request);
+        $json = $this->dispatchFrom('MyApp\Jobs\GetAuthenticatedUser', $request);
 
         return $json;
     }
@@ -42,7 +42,7 @@ class AuthenticateController extends Controller
      */
     public function authenticate(Request $request)
     {
-        $json = $this->dispatchFrom('UnitConnection\Jobs\AuthenticateUser', $request);
+        $json = $this->dispatchFrom('MyApp\Jobs\AuthenticateUser', $request);
 
         return $json;
     }

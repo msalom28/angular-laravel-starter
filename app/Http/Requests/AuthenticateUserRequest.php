@@ -1,8 +1,8 @@
 <?php
 
-namespace UnitConnection\Http\Requests;
+namespace MyApp\Http\Requests;
 
-use UnitConnection\Http\Requests\Request;
+use MyApp\Http\Requests\Request;
 
 class AuthenticateUserRequest extends Request
 {

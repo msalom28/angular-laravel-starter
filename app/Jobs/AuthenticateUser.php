@@ -1,10 +1,10 @@
 <?php
 
-namespace UnitConnection\Jobs;
+namespace MyApp\Jobs;
 
 use JWTAuth;
 use Validator;
-use UnitConnection\Jobs\Job;
+use MyApp\Jobs\Job;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Contracts\Bus\SelfHandling;
 

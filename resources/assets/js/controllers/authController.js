@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('AuthController', AuthController);
 
 		//$auth is provided by satellizer

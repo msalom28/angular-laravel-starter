@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitConnection\Console\Commands;
+namespace MyApp\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;

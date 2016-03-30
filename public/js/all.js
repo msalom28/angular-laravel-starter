@@ -38363,7 +38363,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 	'use strict';
 
 	angular
-		.module('UnitConnection', ['ui.router', 'ui.bootstrap', 'satellizer'])
+		.module('MyApp', ['ui.router', 'ui.bootstrap', 'satellizer'])
 		.config( function( $stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide ){
 
 			//Contains the logic of what to do when certain responses are encountered
@@ -38429,34 +38429,20 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 			$urlRouterProvider.otherwise('/');
 
 			$stateProvider
-
 				.state('welcome', {
 					url: '/',
 					templateUrl: 'views/welcomeView.html',
 					controller: 'WelcomeController as wc'
 				})
-
 				.state('auth', {
 					url: '/auth',
 					templateUrl: 'views/authView.html',
 					controller: 'AuthController as ac'
 				})
-				.state('users', {
-					url: '/users',
-					templateUrl: 'views/userView.html',
-					controller: 'UserController as uc'
-
-				})
 				.state('dashboard', {
 					url: '/dashboard',
 					templateUrl: 'views/dashboardView.html',
 					controller: 'DashboardController as dc'
-
-				})
-				.state('properties', {
-					url: '/properties',
-					templateUrl: 'views/propertiesView.html',
-					controller: 'PropertyController as pc'
 
 				});
 
@@ -38515,7 +38501,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 	'use strict'
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.service('AuthService', AuthService);
 
 		function AuthService($auth, $rootScope, $state){
@@ -38550,27 +38536,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 	'use strict';
 
 	angular
-		.module('UnitConnection')
-		.service('PropertyService', PropertyService);
-
-		function PropertyService($http){
-
-			var self = this;
-
-			this.getProperties = function(){
-				return $http.get('/api/properties/');
-			}
-
-		}
-
-
-})();
-(function(){
-
-	'use strict';
-
-	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('WelcomeController', WelcomeController);
 
 		function WelcomeController($state, $rootScope){
@@ -38588,7 +38554,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 	'use strict';
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('AuthController', AuthController);
 
 		//$auth is provided by satellizer
@@ -38647,47 +38613,12 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 		}
 
 })();
-(function() {
-
-	'user strict';
-
-	angular
-		.module('UnitConnection')
-		.controller('UserController', UserController);
-
-		function UserController( $http, AuthService )
-		{
-			var uc = this;
-
-			uc.users;
-			uc.error;
-
-			uc.getUsers = function() {
-
-				$http.get('api/authenticate').success( function( users ){
-
-					uc.users = users;
-
-				}).error( function( error ){
-
-					uc.error = error;
-
-				});
-			}
-
-			uc.logout = function(){
-				
-				AuthService.logout();
-			}
-		}
-
-})();
 (function(){
 
 	'use strict';
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('DashboardController', DashboardController);
 
 		function DashboardController( $state, $rootScope, AuthService){
@@ -38708,34 +38639,6 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
 		}
 
-
-
-
-
-})();
-(function(){
-
-	'use strict';
-
-	angular
-		.module('UnitConnection')
-		.controller('PropertyController', PropertyController);
-
-		function PropertyController(PropertyService){
-
-			var pc = this;			
-
-			pc.getProperties = function(){
-
-				PropertyService.getProperties().then(function(results){
-					pc.properties = results.data;
-				}, function(error){
-					console.log('An error ocurred');
-				});
-
-			}
-
-		}
 
 
 

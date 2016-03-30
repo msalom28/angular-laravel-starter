@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitConnection\Providers;
+namespace MyApp\Providers;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'UnitConnection\Model' => 'UnitConnection\Policies\ModelPolicy',
+        'MyApp\Model' => 'MyApp\Policies\ModelPolicy',
     ];
 
     /**

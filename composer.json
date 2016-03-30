@@ -20,7 +20,7 @@
             "database"
         ],
         "psr-4": {
-            "UnitConnection\\": "app/"
+            "MyApp\\": "app/"
         }
     },
     "autoload-dev": {

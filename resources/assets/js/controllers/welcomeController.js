@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('WelcomeController', WelcomeController);
 
 		function WelcomeController($state, $rootScope){

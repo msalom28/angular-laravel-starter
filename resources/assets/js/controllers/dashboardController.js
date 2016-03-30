@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('UnitConnection')
+		.module('MyApp')
 		.controller('DashboardController', DashboardController);
 
 		function DashboardController( $state, $rootScope, AuthService){

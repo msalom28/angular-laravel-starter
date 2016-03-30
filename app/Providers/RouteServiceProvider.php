@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitConnection\Providers;
+namespace MyApp\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'UnitConnection\Http\Controllers';
+    protected $namespace = 'MyApp\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.

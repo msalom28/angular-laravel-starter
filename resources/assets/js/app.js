@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('UnitConnection', ['ui.router', 'ui.bootstrap', 'satellizer'])
+		.module('MyApp', ['ui.router', 'ui.bootstrap', 'satellizer'])
 		.config( function( $stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide ){
 
 			//Contains the logic of what to do when certain responses are encountered
@@ -69,34 +69,20 @@
 			$urlRouterProvider.otherwise('/');
 
 			$stateProvider
-
 				.state('welcome', {
 					url: '/',
 					templateUrl: 'views/welcomeView.html',
 					controller: 'WelcomeController as wc'
 				})
-
 				.state('auth', {
 					url: '/auth',
 					templateUrl: 'views/authView.html',
 					controller: 'AuthController as ac'
 				})
-				.state('users', {
-					url: '/users',
-					templateUrl: 'views/userView.html',
-					controller: 'UserController as uc'
-
-				})
 				.state('dashboard', {
 					url: '/dashboard',
 					templateUrl: 'views/dashboardView.html',
 					controller: 'DashboardController as dc'
-
-				})
-				.state('properties', {
-					url: '/properties',
-					templateUrl: 'views/propertiesView.html',
-					controller: 'PropertyController as pc'
 
 				});
 

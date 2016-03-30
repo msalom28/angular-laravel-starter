@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitConnection\Events;
+namespace MyApp\Events;
 
 abstract class Event
 {

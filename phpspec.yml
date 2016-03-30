@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: UnitConnection
-        psr4_prefix: UnitConnection
+        namespace: MyApp
+        psr4_prefix: MyApp
         src_path: app
